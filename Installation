@@ -36,7 +36,7 @@ VBoxManage startvm "Nom_De_Votre_VM"
 
 Étape 6 : Eteindre la VM
 Commande pour éteindre la VM
-
+VBoxManage controlvm "Nom_De_Votre_VM" acpipowerbutton
 //
 Astuce : Mode sans interface graphique (Headless)
 VBoxManage startvm "Nom_De_Votre_VM" --type headless 
