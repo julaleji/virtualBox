@@ -1,0 +1,135 @@
+Logiciel pour extraire 7zip :
+
+sudo apt update
+sudo apt install p7zip-full -y
+
+Extraction du ficher Ubuntu (.7z)
+7z x UbuntuServer.7z
+
+Déplacer les fichier dans le dossier
+mv UbuntuServer.vbox UbuntuServer.vbi UbuntuServer.7z /chemin/vers/vm
+
+//Le fichier ubuntu server a été télécharger avec LinuxImage.
+//La VM est déjà pré-configuré 
+//L'installation est simple
+
+
+
+**Installer Ubuntu server avec un ficher vbox (installtion rapide)**
+
+Pour ouvrir et utiliser votre fichier Ubuntu Server : VBoxManage
+Étape 1 : Vérifiez l'installation de VirtualBox
+VBoxManage --version
+Cela devrait afficher la version de VirtualBox. 
+
+Étape 2 : Accédez à votre fichier Ubuntu Server
+(comme .vbox) Chemin des fichiers : cd /chemin/vers/vm/UbuntuServer.vbox
+
+Étape 3 : Ajoutez la machine virtuelle dans VirtualBox
+VBoxManage registervm /chemin/vers/vm/UbuntuServer.vbox
+
+Étape 4 : Vérifiez que la VM a été ajoutée
+VBoxManage list vms
+
+Étape 5 : Démarrez la VM
+VBoxManage startvm "Nom_De_Votre_VM"
+
+Étape 6 : Eteindre la VM
+Commande pour éteindre la VM
+VBoxManage controlvm "Nom_De_Votre_VM" acpipowerbutton
+//
+Astuce : Mode sans interface graphique (Headless)
+VBoxManage startvm "Nom_De_Votre_VM" --type headless 
+//
+
+**Pour arrêter une machine virtuelle dans VirtualBox, vous pouvez utiliser l'outil VBoxManage.**
+
+1. Identifier le nom ou l’ID de la machine virtuelle
+VBoxManage list runningvms
+Vous verrez une sortie similaire à ceci :
+"UbuntuServer" {c2c5e2a0-1b2d-4d56-892f-123456789abc}
+
+2. Commande pour arrêter la VM
+a. Arrêt immédiat (force brutale)
+VBoxManage controlvm "Nom_De_Votre_VM" poweroff
+
+b. Arrêt propre (si pris en charge par l'OS)
+VBoxManage controlvm "Nom_De_Votre_VM" acpipowerbutton
+
+c. Sauvegarde de l'état de la VM
+VBoxManage controlvm "Nom_De_Votre_VM" savestate
+
+3. Vérifiez que la VM est arrêtée
+VBoxManage list runningvms
+
+Résumé rapide des commandes principales :
+
+    Arrêt immédiat : VBoxManage controlvm "Nom_De_Votre_VM" poweroff
+    Arrêt propre (ACPI) : VBoxManage controlvm "Nom_De_Votre_VM" acpipowerbutton
+    Sauvegarde de l'état : VBoxManage controlvm "Nom_De_Votre_VM" savestate
+
+Tips :  
+
+Afficher la configuration 
+VBoxManage showvminfo "Nom_De_Votre_VM"
+
+>Mot de passe 
+passwd
+
+> Clavier
+sudo nano /etc/default/keyboard
+XKBLAYOUT="fr"
+
+>Rechercher un fichier find/grep/locate/which (a voir)
+
+
+**Ubuntu server avec un ficher VMDK **
+
+1- Créer la machine virtuelle
+VBoxManage createvm --name "Nom_VM" --register
+
+2.Configurer la RAM et le contrôleur de stockage 
+VBoxManage modifyvm "Nom_VM" --memory 1024
+VBoxManage storagectl "Nom_VM" --name "SATA" --add sata --controller IntelAhci
+
+3.Attacher le fichier .vmdk :
+VBoxManage storageattach "Nom_VM" --storagectl "SATA" --port 0 --device 0 --type hdd --medium /chemin/vers/votre/fichier.vmdk
+
+4.Démarrer la machine virtuelle
+VBoxManage startvm "Nom_VM"
+ou 
+VBoxManage startvm "Nom_VM" --type headless
+
+Vérification des erreurs :
+Format du fichier
+Conversion de .vmdk vers un format compatible VirtualBox :
+VBoxManage clonemedium "/chemin/vers/votre/fichier.vmdk" "/chemin/vers/votre/fichier_converti.vdi" --format VDI
+
+Interface réseau 
+nmcli device status
+
+Passerelle par défault
+ip route
+
+Service réseau 
+systemctl status network.service
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
